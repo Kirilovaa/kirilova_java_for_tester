@@ -14,11 +14,11 @@ public class ContactCreationTests {
   public void setUp(){
     wd = new FirefoxDriver();
     wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    wd.get("http://localhost/addressbook/index.php");
+    login();
   }
 
-  @Test
-  public void testContactCreation(){
-    wd.get("http://localhost/addressbook/index.php");
+  private void login() {
     wd.findElement(By.name("user")).click();
     wd.findElement(By.name("user")).clear();
     wd.findElement(By.name("user")).sendKeys("admin");
@@ -26,74 +26,94 @@ public class ContactCreationTests {
     wd.findElement(By.name("pass")).clear();
     wd.findElement(By.name("pass")).sendKeys("secret");
     wd.findElement(By.xpath("//input[@value='Login']")).click();
-    wd.findElement(By.linkText("add new")).click();
+  }
+
+  @Test
+  public void testContactCreation(){
+    gotoNewContact();
+    fillContactForm(new ContactData("userName", "userMiddleName", "userLastName", "userNickname", "title1", "companyName", "companyAddress", "homeTel", "mobelTel", "workTel", "fax1", "email1", "email2", "email3", "homePage", "10", "January", "1980", "10", "December", "1999"));
+    submitContactCreation();
+    returnToHomePage();
+  }
+
+  private void returnToHomePage() {
+    wd.findElement(By.linkText("home page")).click();
+  }
+
+  private void submitContactCreation() {
+    wd.findElement(By.name("submit")).click();
+  }
+
+  private void fillContactForm(ContactData contactData) {
     wd.findElement(By.name("firstname")).click();
     wd.findElement(By.name("firstname")).clear();
-    wd.findElement(By.name("firstname")).sendKeys("userName");
+    wd.findElement(By.name("firstname")).sendKeys(contactData.getUserNameParametr());
     wd.findElement(By.name("middlename")).click();
     wd.findElement(By.name("middlename")).clear();
-    wd.findElement(By.name("middlename")).sendKeys("userMiddleName");
+    wd.findElement(By.name("middlename")).sendKeys(contactData.getUserMiddleName());
     wd.findElement(By.name("lastname")).click();
     wd.findElement(By.name("lastname")).clear();
-    wd.findElement(By.name("lastname")).sendKeys("userLastName");
+    wd.findElement(By.name("lastname")).sendKeys(contactData.getUserLastName());
     wd.findElement(By.name("nickname")).click();
     wd.findElement(By.name("nickname")).clear();
-    wd.findElement(By.name("nickname")).sendKeys("userNickname");
+    wd.findElement(By.name("nickname")).sendKeys(contactData.getUserNickname());
     wd.findElement(By.name("title")).click();
     wd.findElement(By.name("title")).clear();
-    wd.findElement(By.name("title")).sendKeys("title1");
+    wd.findElement(By.name("title")).sendKeys(contactData.getTitle1());
     wd.findElement(By.name("company")).click();
     wd.findElement(By.name("company")).clear();
-    wd.findElement(By.name("company")).sendKeys("companyName");
+    wd.findElement(By.name("company")).sendKeys(contactData.getCompanyName());
     wd.findElement(By.name("address")).click();
     wd.findElement(By.name("address")).clear();
-    wd.findElement(By.name("address")).sendKeys("companyAddress");
+    wd.findElement(By.name("address")).sendKeys(contactData.getCompanyAddress());
     wd.findElement(By.name("theform")).click();
     wd.findElement(By.name("home")).click();
     wd.findElement(By.name("home")).clear();
-    wd.findElement(By.name("home")).sendKeys("homeTel");
+    wd.findElement(By.name("home")).sendKeys(contactData.getHomeTel());
     wd.findElement(By.name("mobile")).click();
     wd.findElement(By.name("mobile")).clear();
-    wd.findElement(By.name("mobile")).sendKeys("mobelTel");
+    wd.findElement(By.name("mobile")).sendKeys(contactData.getMobelTel());
     wd.findElement(By.name("work")).click();
     wd.findElement(By.name("work")).clear();
-    wd.findElement(By.name("work")).sendKeys("workTel");
+    wd.findElement(By.name("work")).sendKeys(contactData.getWorkTel());
     wd.findElement(By.name("fax")).click();
     wd.findElement(By.name("fax")).clear();
-    wd.findElement(By.name("fax")).sendKeys("fax1");
+    wd.findElement(By.name("fax")).sendKeys(contactData.getFax1());
     wd.findElement(By.name("email")).click();
     wd.findElement(By.name("email")).clear();
-    wd.findElement(By.name("email")).sendKeys("email1");
+    wd.findElement(By.name("email")).sendKeys(contactData.getEmail1());
     wd.findElement(By.name("email2")).click();
     wd.findElement(By.name("email2")).clear();
-    wd.findElement(By.name("email2")).sendKeys("email2");
+    wd.findElement(By.name("email2")).sendKeys(contactData.getEmail2());
     wd.findElement(By.name("email3")).click();
     wd.findElement(By.name("email3")).clear();
-    wd.findElement(By.name("email3")).sendKeys("email3");
+    wd.findElement(By.name("email3")).sendKeys(contactData.getEmail3());
     wd.findElement(By.name("homepage")).click();
     wd.findElement(By.name("homepage")).clear();
-    wd.findElement(By.name("homepage")).sendKeys("homePage");
-    new Select(wd.findElement(By.name("bday"))).selectByVisibleText("10");
+    wd.findElement(By.name("homepage")).sendKeys(contactData.getHomePage());
+    new Select(wd.findElement(By.name("bday"))).selectByVisibleText(contactData.getBday());
     wd.findElement(By.name("bday")).click();
-    new Select(wd.findElement(By.name("bmonth"))).selectByVisibleText("January");
+    new Select(wd.findElement(By.name("bmonth"))).selectByVisibleText(contactData.getBounth());
     wd.findElement(By.name("bmonth")).click();
     wd.findElement(By.name("byear")).click();
     wd.findElement(By.name("byear")).clear();
-    wd.findElement(By.name("byear")).sendKeys("1980");
-    new Select(wd.findElement(By.name("aday"))).selectByVisibleText("10");
+    wd.findElement(By.name("byear")).sendKeys(contactData.getByear());
+    new Select(wd.findElement(By.name("aday"))).selectByVisibleText(contactData.getAday());
     wd.findElement(By.name("aday")).click();
-    new Select(wd.findElement(By.name("amonth"))).selectByVisibleText("December");
+    new Select(wd.findElement(By.name("amonth"))).selectByVisibleText(contactData.getAmonth());
     wd.findElement(By.name("amonth")).click();
     wd.findElement(By.name("ayear")).click();
     wd.findElement(By.name("ayear")).clear();
-    wd.findElement(By.name("ayear")).sendKeys("1999");
-    wd.findElement(By.name("submit")).click();
-    wd.findElement(By.linkText("home page")).click();
-    wd.findElement(By.linkText("Logout")).click();
+    wd.findElement(By.name("ayear")).sendKeys(contactData.getAyear());
+  }
+
+  private void gotoNewContact() {
+    wd.findElement(By.linkText("add new")).click();
   }
 
   @AfterMethod(alwaysRun = true)
   public void tearDown() {
+    wd.findElement(By.linkText("Logout")).click();
     wd.quit();
   }
 
@@ -106,7 +126,7 @@ public class ContactCreationTests {
     }
   }
 
-  private boolean isAlertPresent() {
+  private boolean isAlertPresent(FirefoxDriver wd) {
     try {
       wd.switchTo().alert();
       return true;
